@@ -9,6 +9,8 @@ df <- read.table(
 df <- df[df$Date == "1/2/2007" | df$Date == "2/2/2007", ]
 # Convert datetime
 df$Datetime <- as.POSIXct(paste(df$Date, df$Time), format = "%d/%m/%Y %H:%M:%S")
+# Create daily ticks
+ticks <- seq(from = min(df$Datetime), to = round(max(df$Datetime), unit = "day"), by = "1 day")
 
 ## Draw Plot 2
 Sys.setlocale("LC_TIME", "C")
@@ -22,7 +24,7 @@ plot(
     ylab = "Global Active Power(Kilowatts)",
     xaxt = "n"
 )
-axis.POSIXct(1, df$Datetime, format = "%a")
+axis(1, at = ticks, labels = format(ticks, "%a"))
 
 plot(
     df$Datetime,
@@ -32,7 +34,7 @@ plot(
     ylab = "Energy sub metering",
     xaxt = "n"
 )
-axis.POSIXct(1, df$Datetime, format = "%a")
+axis(1, at = ticks, labels = format(ticks, "%a"))
 lines(
     strptime(df$Datetime, "%d/%m/%Y %H:%M:%S"),
     df$Sub_metering_2,
@@ -60,7 +62,7 @@ plot(
     ylab = "Voltage",
     xaxt = "n"
 )
-axis.POSIXct(1, df$Datetime, format = "%a")
+axis(1, at = ticks, labels = format(ticks, "%a"))
 
 plot(
     df$Datetime,
@@ -70,6 +72,6 @@ plot(
     ylab = "Global_reactive_power",
     xaxt = "n"
 )
-axis.POSIXct(1, df$Datetime, format = "%a")
+axis(1, at = ticks, labels = format(ticks, "%a"))
 
 dev.off()
